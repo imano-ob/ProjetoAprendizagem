@@ -1,0 +1,3 @@
+--> Ler Enunciado
+--> Aprender OpenCV (Ver com Jack)
+--> Aprender Bag of Words
