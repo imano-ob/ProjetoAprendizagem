@@ -24,8 +24,10 @@ void ImageSet::Load() {
         
         printf("\tListing class dir '%s':\n", className.c_str());
         StrVector::iterator itFile;
-        for (itFile=imagePaths_[className].begin(); itFile != imagePaths_[className].end(); ++itFile)
+        for (itFile=imagePaths_[className].begin(); itFile != imagePaths_[className].end(); ++itFile) {
+            images_.push_back( path_+"/"+className+"/"+string(*itFile) );
             printf("\t\t%s\n", itFile->c_str());
+        }
     }
 }
 
@@ -36,6 +38,7 @@ StrVector ImageSet::GetImagesForClass(const string& classname) {
     return StrVector();
 }
 
+/* Valeu EP1 de SO */
 StrVector ImageSet::listDir(const string& path, ListDirMode mode) {
     StrVector list;
     string entryName;

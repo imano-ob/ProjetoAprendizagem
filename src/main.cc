@@ -1,6 +1,7 @@
 #include <cv.h>
 #include <highgui.h>
 #include "imageset.h"
+#include "classifier.h"
 
 int main ( int argc, char **argv ) {
     cvNamedWindow( "My Window", 1 );
@@ -16,6 +17,9 @@ int main ( int argc, char **argv ) {
     
     projeto::ImageSet set ( argv[1] );
     set.Load();
+    
+    projeto::Classifier cla;
+    cla.RunTraining(set);
     
     return 0;
 }
