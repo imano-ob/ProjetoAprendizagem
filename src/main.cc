@@ -1,5 +1,6 @@
 #include <cv.h>
 #include <highgui.h>
+#include "imageset.h"
 
 int main ( int argc, char **argv ) {
     cvNamedWindow( "My Window", 1 );
@@ -12,5 +13,9 @@ int main ( int argc, char **argv ) {
     cvPutText( img, "Hello World!", cvPoint( 200, 400 ), &font, cvScalar( 255, 255, 0 ) );
     cvShowImage( "My Window", img );
     cvWaitKey();
+    
+    projeto::ImageSet set ( argv[1] );
+    set.Load();
+    
     return 0;
 }

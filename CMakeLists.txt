@@ -37,7 +37,7 @@ if (${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
 endif ()
 
 
-include(/usr/share/opencv/OpenCVConfig.cmake)
+include(/usr/share/OpenCV/OpenCVConfig.cmake)
 FIND_PACKAGE(OpenCV REQUIRED ) 
 
 
@@ -47,6 +47,8 @@ set (SRC_DIR src)
 SET(SRCS
     ./src/main.cc
 
+    ./src/classifier.cc
+    ./src/imageset.cc
 )
 
 include_directories ("src")

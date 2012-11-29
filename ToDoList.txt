@@ -5,21 +5,25 @@
 
 
 Classificador:
-    Extrai FEATURES do training set com todas classes
+    Extrai FEATURES do training set com todas classes 
     Criar um vocabulario de features by clustering as features (kNN, etc)
     Treina o classificador (com o mesmo ou outro set de imagens)
+    -----
+    para cada imagem de treino
+    tem um FeatureDescriptor, DescriptorExtractor, BOWTrainer -> gera 1 Vocabulario para tudo
+    
+    para cada imagem de treino
+    tem um FeatureDescriptor, DescriptorExtractor, DescriptorMatcher, BOWImgDescriptorExtractor -> gera histogramas pra cada imagem
+    
+    treinar o classificador com os histogramas e labels das classes
+    
+    
     
 ---------------------------------------------
 Pegando/Instalando o OpenCV pra compilar o projeto:
 ---------------------------------------------
-Instale os 3 pacotes:
-    libcv-dev  (O OpenCV em si)
-    libhighgui-dev (O pacote de GUI do OpenCV, vai entender pq é separado...)
-    libcvaux-dev (Extensoes pro OpenCV)
-    
-    Pelo que eu vi, pelo apt-get os 3 são da mesma versão que o python-opencv que
-    tinhamos instalado antes, o 2.1.0
-    
-Vc também pode tentar baixar e compilar o OpenCV, mas como o Wil disse,
-é grande pacas, é uma versão mais recente (2.3.x ou 2.4.x acho), e ai teria
-que instalá-lo como padrão pro CMake encontrar.
+Esqueça instalar os pacotes, a versão mais recente o OpenCV mudou muita coisa,
+que não ajuda mais usar o pacote antigo...
+
+Baixe e compile o OpenCV, lembrando de setar pra ser RELEASE e pro INSTALL_PREFIX
+ser /usr/, ai depois rode make install pra instalar.
