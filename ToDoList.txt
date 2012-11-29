@@ -9,3 +9,17 @@ Classificador:
     Criar um vocabulario de features by clustering as features (kNN, etc)
     Treina o classificador (com o mesmo ou outro set de imagens)
     
+---------------------------------------------
+Pegando/Instalando o OpenCV pra compilar o projeto:
+---------------------------------------------
+Instale os 3 pacotes:
+    libcv-dev  (O OpenCV em si)
+    libhighgui-dev (O pacote de GUI do OpenCV, vai entender pq é separado...)
+    libcvaux-dev (Extensoes pro OpenCV)
+    
+    Pelo que eu vi, pelo apt-get os 3 são da mesma versão que o python-opencv que
+    tinhamos instalado antes, o 2.1.0
+    
+Vc também pode tentar baixar e compilar o OpenCV, mas como o Wil disse,
+é grande pacas, é uma versão mais recente (2.3.x ou 2.4.x acho), e ai teria
+que instalá-lo como padrão pro CMake encontrar.
