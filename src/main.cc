@@ -4,7 +4,7 @@
 #include "classifier.h"
 
 int main ( int argc, char **argv ) {
-    cvNamedWindow( "My Window", 1 );
+    /*cvNamedWindow( "My Window", 1 );
     IplImage *img = cvCreateImage( cvSize( 640, 480 ), IPL_DEPTH_8U, 1 );
     CvFont font;
     double hScale = 1.0;
@@ -13,7 +13,7 @@ int main ( int argc, char **argv ) {
     cvInitFont( &font, CV_FONT_HERSHEY_SIMPLEX | CV_FONT_ITALIC, hScale, vScale, 0, lineWidth );
     cvPutText( img, "Hello World!", cvPoint( 200, 400 ), &font, cvScalar( 255, 255, 0 ) );
     cvShowImage( "My Window", img );
-    cvWaitKey();
+    cvWaitKey();*/
     
     projeto::ImageSet set ( argv[1] );
     set.Load();

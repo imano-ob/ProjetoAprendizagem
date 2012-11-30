@@ -2,6 +2,7 @@
 #include <dirent.h>
 #include <sys/stat.h>
 #include <cstdio>
+#include <opencv2/core/core.hpp>
 
 namespace projeto {
 
@@ -17,25 +18,40 @@ void ImageSet::Load() {
     string className;
     StrVector::iterator it;
     printf("Loading ImageSet from %s\n", path_.c_str());
+    float label = 1.0;
     for (it=baseDirList.begin(); it != baseDirList.end(); ++it) {
         className = *it;
         classes_.push_back(className);
-        imagePaths_[className] = listDir(path_+"/"+className, ONLY_FILES);
+        classLabels_[className] = cv::Mat(1, 1, CV_32F, label);
+        label++;
+        
+        ImgInfoVector iiv;
+        StrVector filenames = listDir(path_+"/"+className, ONLY_FILES);
         
         printf("\tListing class dir '%s':\n", className.c_str());
         StrVector::iterator itFile;
-        for (itFile=imagePaths_[className].begin(); itFile != imagePaths_[className].end(); ++itFile) {
-            images_.push_back( path_+"/"+className+"/"+string(*itFile) );
+        for (itFile=filenames.begin(); itFile != filenames.end(); ++itFile) {
+            ImgInfo info (path_+"/"+className+"/"+string(*itFile),  className);
+            images_.push_back( info );
+            iiv.push_back( info );
             printf("\t\t%s\n", itFile->c_str());
         }
+        imagePaths_[className] = iiv;
     }
 }
 
-StrVector ImageSet::GetImagesForClass(const string& classname) {
+cv::Mat ImageSet::GetLabelForClass(const std::string& classname) {
+    if (classLabels_.count(classname)) {
+        return classLabels_[classname];
+    }
+    return cv::Mat();
+}
+
+ImgInfoVector ImageSet::GetImagesForClass(const string& classname) {
     if (imagePaths_.count(classname)) {
         return imagePaths_[classname];
     }
-    return StrVector();
+    return ImgInfoVector();
 }
 
 /* Valeu EP1 de SO */

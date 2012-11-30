@@ -49,6 +49,7 @@ SET(SRCS
 
     ./src/classifier.cc
     ./src/imageset.cc
+    ./src/imginfo.cc
 )
 
 include_directories ("src")

@@ -4,8 +4,14 @@
 #include <string>
 #include <vector>
 #include <map>
+#include "imginfo.h"
+
+namespace cv {
+class Mat;
+}
 
 namespace projeto {
+
 
 typedef std::vector<std::string> StrVector;
 
@@ -16,15 +22,20 @@ public:
     
     void Load();
     
-    StrVector GetImagesForClass(const std::string& classname);
     StrVector& GetClasses() { return classes_; }
-    StrVector& GetAllImages() { return images_; }
+    cv::Mat GetLabelForClass(const std::string& classname);
+    
+    ImgInfoVector GetImagesForClass(const std::string& classname);
+    ImgInfoVector& GetAllImages() { return images_; }
     
 private:
     std::string path_;
+    
     StrVector classes_;
-    StrVector images_;
-    std::map< std::string, StrVector > imagePaths_;
+    std::map< std::string, cv::Mat > classLabels_;
+    
+    ImgInfoVector images_;
+    std::map< std::string, ImgInfoVector > imagePaths_;
     
     enum ListDirMode { ONLY_FILES, ONLY_DIRS, ALL };
     StrVector listDir(const std::string& path, ListDirMode mode);
