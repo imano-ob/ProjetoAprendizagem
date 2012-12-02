@@ -17,24 +17,24 @@ void ImageSet::Load() {
     StrVector baseDirList = listDir(path_, ONLY_DIRS);
     string className;
     StrVector::iterator it;
-    printf("Loading ImageSet from %s\n", path_.c_str());
+    //printf("Loading ImageSet from %s\n", path_.c_str());
     float label = 1.0;
     for (it=baseDirList.begin(); it != baseDirList.end(); ++it) {
         className = *it;
         classes_.push_back(className);
-        classLabels_[className] = cv::Mat(1, 1, CV_32F, label);
+        classLabels_[className] = cv::Mat(1, 1, CV_32FC1, label);
         label++;
         
         ImgInfoVector iiv;
         StrVector filenames = listDir(path_+"/"+className, ONLY_FILES);
         
-        printf("\tListing class dir '%s':\n", className.c_str());
+        //printf("\tListing class dir '%s':\n", className.c_str());
         StrVector::iterator itFile;
         for (itFile=filenames.begin(); itFile != filenames.end(); ++itFile) {
             ImgInfo info (path_+"/"+className+"/"+string(*itFile),  className);
             images_.push_back( info );
             iiv.push_back( info );
-            printf("\t\t%s\n", itFile->c_str());
+            //printf("\t\t%s\n", itFile->c_str());
         }
         imagePaths_[className] = iiv;
     }

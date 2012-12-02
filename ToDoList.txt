@@ -1,9 +1,12 @@
---> Ler Enunciado
---> Aprender OpenCV (Ver com Jack)
---> Aprender Bag of Words
+-Save/load de vocabularios
+-Save/load de classificadores
+
+-Implementar teste do classificador
+
+-Rodar varios classificadores diferentes (featureextractor, descriptor, etc) pra comparação 
 
 
-
+===========================================================================================================================
 Classificador:
     Extrai FEATURES do training set com todas classes 
     Criar um vocabulario de features by clustering as features (kNN, etc)

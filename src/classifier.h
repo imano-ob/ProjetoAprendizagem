@@ -15,6 +15,7 @@ public:
     ~Classifier();
     
     void RunTraining(ImageSet& set);
+    void RunTests(ImageSet& set);
     
 private:
     cv::Ptr<cv::FeatureDetector> detector_;

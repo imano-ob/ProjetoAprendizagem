@@ -4,7 +4,7 @@
 namespace projeto {
 
 cv::Mat ImgInfo::GetImage() {
-    return cv::imread( filename_ );
+    return cv::imread( filename_, CV_LOAD_IMAGE_GRAYSCALE);//CV_LOAD_IMAGE_COLOR );
 }
 
 }

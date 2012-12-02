@@ -2,6 +2,11 @@
 #include <highgui.h>
 #include "imageset.h"
 #include "classifier.h"
+#include <iostream>
+#include <fstream>
+
+using std::cout;
+using std::endl;
 
 int main ( int argc, char **argv ) {
     /*cvNamedWindow( "My Window", 1 );
@@ -15,11 +20,20 @@ int main ( int argc, char **argv ) {
     cvShowImage( "My Window", img );
     cvWaitKey();*/
     
-    projeto::ImageSet set ( argv[1] );
-    set.Load();
+    if (argc < 3) {
+        cout << "Wrong program call. Execute:" << endl;
+        cout << "\t" << argv[0] << " <training_set_dir_path> <test_set_dir_path>" << endl;
+        return 0;
+    }
+    
+    projeto::ImageSet training ( argv[1] );
+    training.Load();
+    projeto::ImageSet test ( argv[2] );
+    test.Load();
     
     projeto::Classifier cla;
-    cla.RunTraining(set);
+    cla.RunTraining(training);
+    cla.RunTests(test);
     
     return 0;
 }
