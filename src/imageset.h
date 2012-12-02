@@ -23,17 +23,14 @@ public:
     void Load();
     
     StrVector& GetClasses() { return classes_; }
-    cv::Mat GetLabelForClass(const std::string& classname);
+    float GetLabelForClass(const std::string& classname);
     
     ImgInfoVector GetImagesForClass(const std::string& classname);
     ImgInfoVector& GetAllImages() { return images_; }
     
 private:
     std::string path_;
-    
     StrVector classes_;
-    std::map< std::string, cv::Mat > classLabels_;
-    
     ImgInfoVector images_;
     std::map< std::string, ImgInfoVector > imagePaths_;
     

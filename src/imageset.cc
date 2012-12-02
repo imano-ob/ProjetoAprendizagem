@@ -8,6 +8,9 @@ namespace projeto {
 
 using std::string;
 
+static std::map< std::string, float > classLabels_;
+static float nextLabel_ = 1.0;
+    
 ImageSet::ImageSet(string basepath) : path_(basepath) {
 }
 ImageSet::~ImageSet() {
@@ -17,34 +20,39 @@ void ImageSet::Load() {
     StrVector baseDirList = listDir(path_, ONLY_DIRS);
     string className;
     StrVector::iterator it;
-    //printf("Loading ImageSet from %s\n", path_.c_str());
+    printf("Loading ImageSet from %s\n", path_.c_str());
     float label = 1.0;
     for (it=baseDirList.begin(); it != baseDirList.end(); ++it) {
         className = *it;
         classes_.push_back(className);
-        classLabels_[className] = cv::Mat(1, 1, CV_32FC1, label);
-        label++;
+        if (!classLabels_.count(className)) {
+            printf("Registering class '%s' with label %.1f\n", className.c_str(), nextLabel_);
+            classLabels_[className] = nextLabel_++;
+        }
+        label = classLabels_[className];
         
         ImgInfoVector iiv;
         StrVector filenames = listDir(path_+"/"+className, ONLY_FILES);
         
-        //printf("\tListing class dir '%s':\n", className.c_str());
+        printf("\tListing class dir '%s' (label=%.1f):\n", className.c_str(), label);
         StrVector::iterator itFile;
         for (itFile=filenames.begin(); itFile != filenames.end(); ++itFile) {
-            ImgInfo info (path_+"/"+className+"/"+string(*itFile),  className);
+            ImgInfo info (string(*itFile), path_+"/"+className+"/"+string(*itFile),  className, label);
             images_.push_back( info );
             iiv.push_back( info );
             //printf("\t\t%s\n", itFile->c_str());
         }
         imagePaths_[className] = iiv;
+        
+        label++;
     }
 }
 
-cv::Mat ImageSet::GetLabelForClass(const std::string& classname) {
+float ImageSet::GetLabelForClass(const std::string& classname) {
     if (classLabels_.count(classname)) {
         return classLabels_[classname];
     }
-    return cv::Mat();
+    return -1.0;
 }
 
 ImgInfoVector ImageSet::GetImagesForClass(const string& classname) {

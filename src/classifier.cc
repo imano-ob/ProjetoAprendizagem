@@ -1,12 +1,15 @@
 #include "classifier.h"
 #include "imageset.h"
 #include <vector>
-#include <cstdio>
+#include <iostream>
+#include <fstream>
 #include <time.h>
 #include <opencv2/nonfree/nonfree.hpp>
 
 namespace projeto {
 
+using std::cout;
+using std::endl;
 using cv::Mat;
 using cv::Ptr;
 
@@ -16,7 +19,7 @@ Classifier::Classifier()  {
     detector_ = Ptr<cv::FeatureDetector>(new cv::SurfFeatureDetector(400)); //minHessian = 400
     extractor_ = Ptr<cv::DescriptorExtractor>(new cv::SurfDescriptorExtractor());
     matcher_ = Ptr<cv::DescriptorMatcher>(new cv::FlannBasedMatcher());
-    trainer_ = Ptr<cv::BOWTrainer>(new cv::BOWKMeansTrainer(50)); //numClusters = 1000
+    trainer_ = Ptr<cv::BOWTrainer>(new cv::BOWKMeansTrainer(200)); //numClusters = 1000
     bowide_ = Ptr<cv::BOWImgDescriptorExtractor>(new cv::BOWImgDescriptorExtractor(extractor_, matcher_));
     //classifier_ = Ptr<CvRTrees>( new CvRTrees() );
     classifier_ = Ptr<CvNormalBayesClassifier>( new CvNormalBayesClassifier() );
@@ -25,23 +28,21 @@ Classifier::~Classifier() {
 }
 
 static void printMatType(const Mat& m, const char* msg) {
-    printf("%s:: Matrix Shape=(%d rows, %d cols): Type = %d (%d depth/ %d channels)\n", msg, m.rows, m.cols, m.type(), m.depth(), m.channels());
+    cout << msg << ":: Matrix Shape=(" << m.rows << " rows, " << m.cols << " cols): Type = ";
+    cout << m.type() << " (" << m.depth() << " depth/ " << m.channels() << " channels)" << endl;
 }
 
 void Classifier::RunTraining(ImageSet& set) {
-    printf("Running Training...\n");
+    cout << "Running Training..." << endl;
     /* Step1: use the training set to generate the vocabulary */
     Mat training_descriptors (1, extractor_->descriptorSize(), extractor_->descriptorType());
     KPVector keypoints;
     
-    printf("Getting descriptors\n");
+    cout << "Getting descriptors" << endl;
     ImgInfoVector images = set.GetAllImages();
     ImgInfoVector::iterator it;
     for (it = images.begin(); it != images.end(); ++it) {
         Mat img = it->GetImage();
-        if (img.data == 0) {
-            printf("FUDEU MANOLO %s\n", it->filename().c_str());
-        }
         detector_->detect(img, keypoints);
         Mat descriptors;
         extractor_->compute(img, keypoints, descriptors);
@@ -50,7 +51,7 @@ void Classifier::RunTraining(ImageSet& set) {
     }
     printMatType(training_descriptors, "TRAINING DESCRIPTORS");
     trainer_->add(training_descriptors);
-    printf("Going to clusterize\n");
+    cout << "Going to clusterize" << endl;
     time_t mark = time(NULL);
     vocabulary_ = trainer_->cluster();
     bowide_->setVocabulary(vocabulary_);
@@ -72,14 +73,14 @@ void Classifier::RunTraining(ImageSet& set) {
         /****/
         samples.push_back( hist );
         printMatType(samples, "BUILDING SAMPLES");
-        labels.push_back( set.GetLabelForClass(it->classname()) );
+        labels.push_back( it->labelMatrix() );
     }
-    printf("Going to train classifier\n");
+    cout << "Going to train classifier" << endl;
     
     /* Step4: train our classifier using the histograms and image labels */
     printMatType(samples, "SAMPLES");
 
-    Mat floatSamples (floatSamples.rows, floatSamples.cols, CV_32FC1);
+    Mat floatSamples (samples.rows, samples.cols, CV_32FC1);
     samples.convertTo(floatSamples, CV_32FC1);
     printMatType(floatSamples, "FLOATSAMPLES");
     printMatType(labels, "LABELS");
@@ -89,8 +90,39 @@ void Classifier::RunTraining(ImageSet& set) {
     printf("FloatSamples type check = %d = %d\n", CV_MAT_TYPE(porra.type), CV_32FC1 );
     mark = time(NULL);
     //classifier_->train(floatSamples, CV_ROW_SAMPLE, labels);  //was using this for CvRTrees classifier
-    classifier_->train(floatSamples, labels);
-    printf("Classifier has been trained (in %ld seconds)\n", (time(NULL)-mark));
+    classifier_->train(floatSamples, labels); //was using this for CvNormalBayesClassifier classifier
+    cout << "Classifier has been trained (in " << (time(0)-mark) << " seconds)" << endl;
+}
+
+void Classifier::RunTests(ImageSet& set) {
+    cout << "Running tests..." << endl;
+    
+    unsigned hits = 0;
+    KPVector keypoints;
+    
+    ImgInfoVector images = set.GetAllImages();
+    ImgInfoVector::iterator it;
+    for (it = images.begin(); it != images.end(); ++it) {
+        Mat img = it->GetImage();
+        detector_->detect(img, keypoints);
+        Mat hist;
+        bowide_->compute(img, keypoints, hist);
+        it->set_histogram(hist);
+        
+        float label = classifier_->predict(hist);
+        float expected = it->label();
+        
+        if (label == expected) {
+            hits++;
+            cout << "{HUZZAH}[" << it->classname() << "] " << it->name() << ": predicted as " << label << " (expecting " << expected << ")" << endl;
+        }
+        else {
+            cout << "{------}[" << it->classname() << "] " << it->name() << ": predicted as " << label << " (expecting " << expected << ")" << endl;
+        }
+    }
+    
+    cout << "Total number of correct results: ";
+    cout << hits << "/" << images.size() << endl;
 }
     
 

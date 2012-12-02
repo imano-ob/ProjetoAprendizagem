@@ -24,6 +24,7 @@ private:
     cv::Ptr<cv::BOWTrainer> trainer_;
     cv::Ptr<cv::BOWImgDescriptorExtractor> bowide_;
     cv::Ptr<CvNormalBayesClassifier> classifier_;
+    //cv::Ptr<CvRTrees> classifier_;
     cv::Mat vocabulary_;
 };
 

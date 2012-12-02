@@ -7,4 +7,8 @@ cv::Mat ImgInfo::GetImage() {
     return cv::imread( filename_, CV_LOAD_IMAGE_GRAYSCALE);//CV_LOAD_IMAGE_COLOR );
 }
 
+cv::Mat ImgInfo::labelMatrix() {
+    return cv::Mat(1, 1, CV_32FC1, label_);
+}
+
 }

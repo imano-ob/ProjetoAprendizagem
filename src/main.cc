@@ -26,14 +26,22 @@ int main ( int argc, char **argv ) {
         return 0;
     }
     
+    projeto::Classifier* cla;    
+    /*TODO: checar por cmd-line arg pra saber qual combinacao de classificador usar
+            usando do Classifier template, criar o classificador desejado 
+            se a opcao nao existir, imprimir mensagem e fechar */
+    cla = new projeto::Classifier();
+    
+    /***/
+    
     projeto::ImageSet training ( argv[1] );
     training.Load();
     projeto::ImageSet test ( argv[2] );
     test.Load();
     
-    projeto::Classifier cla;
-    cla.RunTraining(training);
-    cla.RunTests(test);
+    cla->RunTraining(training);
+    cla->RunTests(test);
     
+    delete cla;
     return 0;
 }
