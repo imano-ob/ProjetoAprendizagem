@@ -1,7 +1,6 @@
+-Generalizar(most likely com Templates) o projeto::Classifier
 -Save/load de vocabularios
 -Save/load de classificadores
-
--Implementar teste do classificador
 
 Rodar varios classificadores diferentes (featureextractor, descriptor, etc) pra comparação 
 -variar deteccao dos KeyPoints (FeatureDetector)
