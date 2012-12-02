@@ -3,22 +3,14 @@
 
 -Implementar teste do classificador
 
--Rodar varios classificadores diferentes (featureextractor, descriptor, etc) pra comparação 
+Rodar varios classificadores diferentes (featureextractor, descriptor, etc) pra comparação 
+-variar deteccao dos KeyPoints (FeatureDetector)
+-variar descricao dos pontos (DescriptorExtractor)
+-variar classificador (os classificadores do Cv, praticamente todos derivam de CvStatModel, mas não podemos usá-la como classe base)
 
+-Script que rode os testes dos classificadores que implementarmos, e e gere um 'relatorio' dos resultados (qual classifier foi melhor e tal)
 
-===========================================================================================================================
-Classificador:
-    Extrai FEATURES do training set com todas classes 
-    Criar um vocabulario de features by clustering as features (kNN, etc)
-    Treina o classificador (com o mesmo ou outro set de imagens)
-    -----
-    para cada imagem de treino
-    tem um FeatureDescriptor, DescriptorExtractor, BOWTrainer -> gera 1 Vocabulario para tudo
-    
-    para cada imagem de treino
-    tem um FeatureDescriptor, DescriptorExtractor, DescriptorMatcher, BOWImgDescriptorExtractor -> gera histogramas pra cada imagem
-    
-    treinar o classificador com os histogramas e labels das classes
+-Escrever um relatório (.pdf) descrevendo as combinações de classificadores que implementamos e os resultados obtidos.
     
     
     

@@ -20,7 +20,7 @@ void ImageSet::Load() {
     StrVector baseDirList = listDir(path_, ONLY_DIRS);
     string className;
     StrVector::iterator it;
-    printf("Loading ImageSet from %s\n", path_.c_str());
+    //printf("Loading ImageSet from %s\n", path_.c_str());
     float label = 1.0;
     for (it=baseDirList.begin(); it != baseDirList.end(); ++it) {
         className = *it;
@@ -34,7 +34,7 @@ void ImageSet::Load() {
         ImgInfoVector iiv;
         StrVector filenames = listDir(path_+"/"+className, ONLY_FILES);
         
-        printf("\tListing class dir '%s' (label=%.1f):\n", className.c_str(), label);
+        //printf("\tListing class dir '%s' (label=%.1f):\n", className.c_str(), label);
         StrVector::iterator itFile;
         for (itFile=filenames.begin(); itFile != filenames.end(); ++itFile) {
             ImgInfo info (string(*itFile), path_+"/"+className+"/"+string(*itFile),  className, label);
