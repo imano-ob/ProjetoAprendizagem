@@ -4,7 +4,7 @@ import sys, os
 
 classifiers = ["BAYES", "KNN", "DTREE"]
 descriptors = ["FAST", "STAR", "SURF"]
-extractors = ["SIFT", "SURF", "ORB"]
+extractors = ["SIFT", "SURF"]
 
 def Execute(argList):
     possibilities = [(d, e) for d in descriptors for e in extractors]
