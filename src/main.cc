@@ -1,9 +1,12 @@
 #include <cv.h>
 #include <highgui.h>
+#include <opencv2/nonfree/nonfree.hpp>
+#include <opencv2/ml/ml.hpp>
 #include "imageset.h"
 #include "classifier.h"
 #include <iostream>
 #include <fstream>
+#include <string>
 
 using std::cout;
 using std::endl;
@@ -20,23 +23,35 @@ int main ( int argc, char **argv ) {
     cvShowImage( "My Window", img );
     cvWaitKey();*/
     
-    if (argc < 3) {
+    if (argc < 6) {
         cout << "Wrong program call. Execute:" << endl;
-        cout << "\t" << argv[0] << " <training_set_dir_path> <test_set_dir_path>" << endl;
+        cout << "\t" << argv[0] << " <classifier> <descriptor> <extractor> <training_set_dir_path> <test_set_dir_path>" << endl;
         return 0;
     }
     
-    projeto::Classifier* cla;    
-    /*TODO: checar por cmd-line arg pra saber qual combinacao de classificador usar
-            usando do Classifier template, criar o classificador desejado 
-            se a opcao nao existir, imprimir mensagem e fechar */
-    cla = new projeto::Classifier();
+    cv::initModule_nonfree();
+    
+    std::string classifierType (argv[1]);
+    projeto::BaseClassifier* cla;
+    if (classifierType == "BAYES") {
+        cla = new projeto::Classifier<CvNormalBayesClassifier>(argv[2], argv[3]);
+    }
+    else if (classifierType == "KNN") {
+        cla = new projeto::Classifier<CvKNearest>(argv[2], argv[3]);
+    }
+    else if (classifierType == "DTREE") {
+        cla = new projeto::Classifier<CvDTree>(argv[2], argv[3]);
+    }
+    else {
+        cout << "ERROR: '" << classifierType << "' Classifier Type passed was not recognized." << endl;
+        return 0;
+    }
     
     /***/
     
-    projeto::ImageSet training ( argv[1] );
+    projeto::ImageSet training ( argv[4] );
     training.Load();
-    projeto::ImageSet test ( argv[2] );
+    projeto::ImageSet test ( argv[5] );
     test.Load();
     
     cla->RunTraining(training);

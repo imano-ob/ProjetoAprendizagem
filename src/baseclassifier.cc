@@ -1,4 +1,4 @@
-#include "classifier.h"
+#include "baseclassifier.h"
 #include "imageset.h"
 #include <vector>
 #include <iostream>
@@ -15,24 +15,28 @@ using cv::Ptr;
 
 typedef std::vector< cv::KeyPoint > KPVector;
 
-Classifier::Classifier()  {
-    detector_ = Ptr<cv::FeatureDetector>(new cv::SurfFeatureDetector(400)); //minHessian = 400
-    extractor_ = Ptr<cv::DescriptorExtractor>(new cv::SurfDescriptorExtractor());
+
+BaseClassifier::BaseClassifier(const std::string& detectorName, const std::string& extractorName) {
+    //detector_ = Ptr<cv::FeatureDetector>(new cv::SurfFeatureDetector(400)); //minHessian = 400
+    detector_ = cv::FeatureDetector::create(detectorName);
+    //extractor_ = Ptr<cv::DescriptorExtractor>(new cv::SurfDescriptorExtractor());
+    extractor_ = Ptr<cv::DescriptorExtractor>( cv::DescriptorExtractor::create(extractorName) );
     matcher_ = Ptr<cv::DescriptorMatcher>(new cv::FlannBasedMatcher());
-    trainer_ = Ptr<cv::BOWTrainer>(new cv::BOWKMeansTrainer(256)); //numClusters = 1000
+    trainer_ = Ptr<cv::BOWTrainer>(new cv::BOWKMeansTrainer(50)); //numClusters = 1000
     bowide_ = Ptr<cv::BOWImgDescriptorExtractor>(new cv::BOWImgDescriptorExtractor(extractor_, matcher_));
     //classifier_ = Ptr<CvRTrees>( new CvRTrees() );
-    classifier_ = Ptr<CvNormalBayesClassifier>( new CvNormalBayesClassifier() );
+    //classifier_ = Ptr<CvNormalBayesClassifier>( new CvNormalBayesClassifier() );
 }
-Classifier::~Classifier() {
+BaseClassifier::~BaseClassifier() {
 }
+
 
 static void printMatType(const Mat& m, const char* msg) {
     cout << msg << ":: Matrix Shape=(" << m.rows << " rows, " << m.cols << " cols): Type = ";
     cout << m.type() << " (" << m.depth() << " depth/ " << m.channels() << " channels)" << endl;
 }
 
-void Classifier::RunTraining(ImageSet& set) {
+void BaseClassifier::RunTraining(ImageSet& set) {
     cout << "Running Training..." << endl;
     /* Step1: use the training set to generate the vocabulary */
     Mat training_descriptors (1, extractor_->descriptorSize(), extractor_->descriptorType());
@@ -90,11 +94,12 @@ void Classifier::RunTraining(ImageSet& set) {
     //printf("FloatSamples type check = %d = %d\n", CV_MAT_TYPE(porra.type), CV_32FC1 );
     mark = time(NULL);
     //classifier_->train(floatSamples, CV_ROW_SAMPLE, labels);  //was using this for CvRTrees classifier
-    classifier_->train(floatSamples, labels); //was using this for CvNormalBayesClassifier classifier
+    //classifier_->train(floatSamples, labels); //was using this for CvNormalBayesClassifier classifier
+    doTrain(floatSamples, labels);
     cout << "Classifier has been trained (in " << (time(0)-mark) << " seconds)" << endl;
 }
 
-void Classifier::RunTests(ImageSet& set) {
+void BaseClassifier::RunTests(ImageSet& set) {
     cout << "Running tests..." << endl;
     
     unsigned hits = 0;
@@ -109,7 +114,7 @@ void Classifier::RunTests(ImageSet& set) {
         bowide_->compute(img, keypoints, hist);
         it->set_histogram(hist);
         
-        float label = classifier_->predict(hist);
+        float label = doPredict(hist); //classifier_->predict(hist);
         float expected = it->label();
         
         if (label == expected) {

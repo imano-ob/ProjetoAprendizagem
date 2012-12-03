@@ -47,7 +47,7 @@ set (SRC_DIR src)
 SET(SRCS
     ./src/main.cc
 
-    ./src/classifier.cc
+    ./src/baseclassifier.cc
     ./src/imageset.cc
     ./src/imginfo.cc
 )
