@@ -14,9 +14,9 @@ def Execute(argList):
         logfileFinalName = logfileBaseName + '_log'
         logfileTmpName = logfileFinalName + '_tmp'
         cmdLine = "./LandmarkDetector %s %s %s sets/training/ sets/test/ > %s" % (classifierType, descriptorType, extractorType, logfileTmpName)
-        os.rename()
         print "RUNNING ", cmdLine
         os.system(cmdLine)
+        os.rename(logfileTmpName, logfileFinalName)
         print "======================================================================================="
     #possibilities = [(c, d, e) for c in classifiers for d in descriptors for e in extractors]
     #
