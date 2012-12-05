@@ -6,8 +6,17 @@ classifiers = ["BAYES", "KNN", "DTREE"]
 descriptors = ["FAST", "STAR", "SURF"]
 extractors = ["SIFT", "SURF"]
 
-def parse():
-    return 1
+def parse(filename):
+    resultFilename = filename + '_analysis'
+    resultFile = open(resultFilename, 'w')
+    if not os.access(filename, os.R_OK):
+        resultFile.write('Failed')
+        successRate = 0
+    else:
+        resultFile.write('Exists!')
+        successRate = 1
+    resultFile.close()
+    return successRate
 
 def Execute(argList):
     possibilities = [(c, d, e) for c in classifiers for d in descriptors for e in extractors]
