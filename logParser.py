@@ -13,8 +13,22 @@ def parse(filename):
         resultFile.write('Failed')
         successRate = 0
     else:
-        resultFile.write('Exists!')
-        successRate = 1
+        logFile = open(filename, 'r')
+        for line in logFile:
+            cleanLine = line.rstrip()
+            lineWords = cleanLine.split()
+            if lineWords[0] == 'ERROR':
+                resultFile.write('Failed')
+                successRate = 0
+                resultFile.close()
+                logFile.close()
+                return successRate
+            elif lineWords[0] == 'REGISTER':
+                doStuff()
+            elif lineWords[0] == 'TEST':
+                doStuff()
+            resultFile.write('Stuff')
+            resultFile.close()
     resultFile.close()
     return successRate
 
