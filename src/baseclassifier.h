@@ -24,8 +24,6 @@ protected:
     cv::Ptr<cv::DescriptorMatcher> matcher_;
     cv::Ptr<cv::BOWTrainer> trainer_;
     cv::Ptr<cv::BOWImgDescriptorExtractor> bowide_;
-    //cv::Ptr<CvNormalBayesClassifier> classifier_;
-    //cv::Ptr<CvRTrees> classifier_;
     cv::Mat vocabulary_;
     
     virtual void doTrain(cv::Mat& samples, cv::Mat& labels) = 0;

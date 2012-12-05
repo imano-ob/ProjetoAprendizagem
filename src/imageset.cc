@@ -26,7 +26,7 @@ void ImageSet::Load() {
         className = *it;
         classes_.push_back(className);
         if (!classLabels_.count(className)) {
-            printf("Registering class '%s' with label %.1f\n", className.c_str(), nextLabel_);
+            printf("REGISTER %s %.1f\n", className.c_str(), nextLabel_);
             classLabels_[className] = nextLabel_++;
         }
         label = classLabels_[className];
@@ -68,8 +68,6 @@ StrVector ImageSet::listDir(const string& path, ListDirMode mode) {
     string entryName;
     DIR *dir;
     struct dirent *ent;
-
-    //chdir(path.c_str());
 
     dir = opendir (path.c_str());
     if (dir != NULL) {
