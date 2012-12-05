@@ -7,8 +7,11 @@ descriptors = ["FAST", "STAR", "SURF"]
 extractors = ["SIFT", "SURF"]
 
 def parse(filename):
-    resultFilename = filename + '_analysis'
+    resultFilename = filename + '_results'
     resultFile = open(resultFilename, 'w')
+    classNames = []
+    classTypes = []
+    successes = 0
     if not os.access(filename, os.R_OK):
         resultFile.write('Failed')
         successRate = 0
@@ -24,9 +27,10 @@ def parse(filename):
                 logFile.close()
                 return successRate
             elif lineWords[0] == 'REGISTER':
-                doStuff()
+                classNames += [lineWords[1]]
+                classTypes += [lineWords[2].int()]
             elif lineWords[0] == 'TEST':
-                doStuff()
+                doStuff
             resultFile.write('Stuff')
             resultFile.close()
     resultFile.close()
