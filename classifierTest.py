@@ -10,7 +10,7 @@ def Execute(argList):
     possibilities = [(d, e) for d in descriptors for e in extractors]
     classifierType = argList[0]
     for descriptorType, extractorType in possibilities:
-        logfileBaseName = classifierType + '_' + descriptorType + '_' + extractorType
+        logfileBaseName = "logs/%s_%s_%s" % (classifierType, descriptorType, extractorType)
         logfileFinalName = logfileBaseName + '_log'
         logfileTmpName = logfileFinalName + '_tmp'
         cmdLine = "./LandmarkDetector %s %s %s sets/training/ sets/test/ > %s" % (classifierType, descriptorType, extractorType, logfileTmpName)
