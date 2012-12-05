@@ -3,5 +3,6 @@ CMakeFiles/
 Makefile
 *.cmake
 *~
+*_log*
 
 LandmarkDetector
