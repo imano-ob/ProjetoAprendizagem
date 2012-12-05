@@ -1,0 +1,72 @@
+REGISTER torre eiffel 1.0
+REGISTER panteão 2.0
+REGISTER muralha-da-china 3.0
+REGISTER cristo 4.0
+REGISTER taj-mahal 5.0
+REGISTER piramides 6.0
+Running Training...
+Getting descriptors
+Descriptors acquired (in 61 seconds)
+Going to clusterize
+Vocabulary has been calculated (in 2400 seconds)
+Going to train classifier
+Classifier has been trained (in 0 seconds)
+Running tests...
+TEST 1 torre eiffel 1 OK
+TEST 5 torre eiffel 1
+TEST 1 torre eiffel 1 OK
+TEST 1 torre eiffel 1 OK
+TEST 4 torre eiffel 1
+TEST 2 torre eiffel 1
+TEST 1 torre eiffel 1 OK
+TEST 4 torre eiffel 1
+TEST 2 torre eiffel 1
+TEST 1 torre eiffel 1 OK
+TEST 2 panteão 2 OK
+TEST 2 panteão 2 OK
+TEST 2 panteão 2 OK
+TEST 2 panteão 2 OK
+TEST 2 panteão 2 OK
+TEST 2 panteão 2 OK
+TEST 2 panteão 2 OK
+TEST 5 panteão 2
+TEST 1 muralha-da-china 3
+TEST 1 muralha-da-china 3
+TEST 3 muralha-da-china 3 OK
+TEST 3 muralha-da-china 3 OK
+TEST 3 muralha-da-china 3 OK
+TEST 5 muralha-da-china 3
+TEST 2 muralha-da-china 3
+TEST 1 muralha-da-china 3
+TEST 3 muralha-da-china 3 OK
+TEST 3 muralha-da-china 3 OK
+TEST 4 cristo 4 OK
+TEST 4 cristo 4 OK
+TEST 4 cristo 4 OK
+TEST 2 cristo 4
+TEST 1 cristo 4
+TEST 4 cristo 4 OK
+TEST 1 cristo 4
+TEST 4 cristo 4 OK
+TEST 4 cristo 4 OK
+TEST 4 cristo 4 OK
+TEST 4 cristo 4 OK
+TEST 2 taj-mahal 5
+TEST 2 taj-mahal 5
+TEST 5 taj-mahal 5 OK
+TEST 5 taj-mahal 5 OK
+TEST 1 taj-mahal 5
+TEST 5 taj-mahal 5 OK
+TEST 4 taj-mahal 5
+TEST 5 taj-mahal 5 OK
+TEST 5 taj-mahal 5 OK
+TEST 6 piramides 6 OK
+TEST 4 piramides 6
+TEST 6 piramides 6 OK
+TEST 6 piramides 6 OK
+TEST 2 piramides 6
+TEST 6 piramides 6 OK
+TEST 6 piramides 6 OK
+TEST 6 piramides 6 OK
+TEST 6 piramides 6 OK
+TEST 6 piramides 6 OK
