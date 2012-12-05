@@ -27,11 +27,6 @@ BaseClassifier::~BaseClassifier() {
 }
 
 
-static void printMatType(const Mat& m, const char* msg) {
-    cout << msg << ":: Matrix Shape=(" << m.rows << " rows, " << m.cols << " cols): Type = ";
-    cout << m.type() << " (" << m.depth() << " depth/ " << m.channels() << " channels)" << endl;
-}
-
 void BaseClassifier::RunTraining(ImageSet& set) {
     cout << "Running Training..." << endl;
     /* Step1: use the training set to generate the vocabulary */
@@ -47,10 +42,8 @@ void BaseClassifier::RunTraining(ImageSet& set) {
         detector_->detect(img, keypoints);
         Mat descriptors;
         extractor_->compute(img, keypoints, descriptors);
-        //printMatType(descriptors, it->filename().c_str());
         training_descriptors.push_back(descriptors);
     }
-    //printMatType(training_descriptors, "TRAINING DESCRIPTORS");
     trainer_->add(training_descriptors);
     cout << "Descriptors acquired (in " << (time(0)-mark) << " seconds)" << endl;
     
@@ -59,8 +52,7 @@ void BaseClassifier::RunTraining(ImageSet& set) {
     vocabulary_ = trainer_->cluster();
     bowide_->setVocabulary(vocabulary_);
     cout << "Vocabulary has been calculated (in " << (time(0)-mark) << " seconds)" << endl;
-    //printMatType(vocabulary_, "VOCABULARY");
-    
+
     /*Step2: generate image histograms using the vocabulary
       Step3: create sample and label vectors  */
     Mat samples, labels;
@@ -71,22 +63,16 @@ void BaseClassifier::RunTraining(ImageSet& set) {
         Mat hist;
         bowide_->compute(img, keypoints, hist);
         it->set_histogram(hist);
-        //printMatType(hist, it->filename().c_str());
 
         /****/
         samples.push_back( hist );
-        //printMatType(samples, "BUILDING SAMPLES");
         labels.push_back( it->labelMatrix() );
     }
     cout << "Going to train classifier" << endl;
     
     /* Step4: train our classifier using the histograms and image labels */
-    //printMatType(samples, "SAMPLES");
-
     Mat floatSamples (samples.rows, samples.cols, CV_32FC1);
     samples.convertTo(floatSamples, CV_32FC1);
-    //printMatType(floatSamples, "FLOATSAMPLES");
-    //printMatType(labels, "LABELS");
     
     mark = time(NULL);
     doTrain(floatSamples, labels);
