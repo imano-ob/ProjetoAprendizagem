@@ -13,10 +13,13 @@ def Execute(argList):
         logfileBaseName = classifierType + '_' + descriptorType + '_' + extractorType
         logfileFinalName = logfileBaseName + '_log'
         logfileTmpName = logfileFinalName + '_tmp'
-        cmdLine = "./LandmarkDetector %s %s %s sets/training/ sets/test/ > %s" % (classifierType, descriptorType, extractorType, logfileTmpName)
-        print "RUNNING ", cmdLine
-        os.system(cmdLine)
-        os.rename(logfileTmpName, logfileFinalName)
+        if !os.access(logfileFinalName, os.F_OK):
+            cmdLine = "./LandmarkDetector %s %s %s sets/training/ sets/test/ > %s" % (classifierType, descriptorType, extractorType, logfileTmpName)
+            print "RUNNING ", cmdLine
+            os.system(cmdLine)
+            os.rename(logfileTmpName, logfileFinalName)
+        else:
+            print "SKIPPING ", cmdLine
         print "======================================================================================="
     #possibilities = [(c, d, e) for c in classifiers for d in descriptors for e in extractors]
     #
