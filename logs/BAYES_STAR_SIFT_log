@@ -1,7 +1,7 @@
 REGISTER panteão 1.0
 REGISTER muralha-da-china 2.0
 REGISTER cristo 3.0
-REGISTER torre eiffel 4.0
+REGISTER torre-eiffel 4.0
 REGISTER taj-mahal 5.0
 REGISTER piramides 6.0
 Running Training...
@@ -41,16 +41,16 @@ TEST 3 cristo 3 OK
 TEST 2 cristo 3
 TEST 3 cristo 3 OK
 TEST 3 cristo 3 OK
-TEST 4 torre eiffel 4 OK
-TEST 4 torre eiffel 4 OK
-TEST 5 torre eiffel 4
-TEST 4 torre eiffel 4 OK
-TEST 4 torre eiffel 4 OK
-TEST 4 torre eiffel 4 OK
-TEST 4 torre eiffel 4 OK
-TEST 4 torre eiffel 4 OK
-TEST 4 torre eiffel 4 OK
-TEST 1 torre eiffel 4
+TEST 4 torre-eiffel 4 OK
+TEST 4 torre-eiffel 4 OK
+TEST 5 torre-eiffel 4
+TEST 4 torre-eiffel 4 OK
+TEST 4 torre-eiffel 4 OK
+TEST 4 torre-eiffel 4 OK
+TEST 4 torre-eiffel 4 OK
+TEST 4 torre-eiffel 4 OK
+TEST 4 torre-eiffel 4 OK
+TEST 1 torre-eiffel 4
 TEST 5 taj-mahal 5 OK
 TEST 5 taj-mahal 5 OK
 TEST 5 taj-mahal 5 OK

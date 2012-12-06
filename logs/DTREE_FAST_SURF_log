@@ -1,4 +1,4 @@
-REGISTER torre eiffel 1.0
+REGISTER torre-eiffel 1.0
 REGISTER panteão 2.0
 REGISTER muralha-da-china 3.0
 REGISTER cristo 4.0
@@ -12,16 +12,16 @@ Vocabulary has been calculated (in 2850 seconds)
 Going to train classifier
 Classifier has been trained (in 0 seconds)
 Running tests...
-TEST 2 torre eiffel 1
-TEST 1 torre eiffel 1 OK
-TEST 1 torre eiffel 1 OK
-TEST 1 torre eiffel 1 OK
-TEST 1 torre eiffel 1 OK
-TEST 1 torre eiffel 1 OK
-TEST 1 torre eiffel 1 OK
-TEST 1 torre eiffel 1 OK
-TEST 1 torre eiffel 1 OK
-TEST 3 torre eiffel 1
+TEST 2 torre-eiffel 1
+TEST 1 torre-eiffel 1 OK
+TEST 1 torre-eiffel 1 OK
+TEST 1 torre-eiffel 1 OK
+TEST 1 torre-eiffel 1 OK
+TEST 1 torre-eiffel 1 OK
+TEST 1 torre-eiffel 1 OK
+TEST 1 torre-eiffel 1 OK
+TEST 1 torre-eiffel 1 OK
+TEST 3 torre-eiffel 1
 TEST 2 panteão 2 OK
 TEST 2 panteão 2 OK
 TEST 5 panteão 2

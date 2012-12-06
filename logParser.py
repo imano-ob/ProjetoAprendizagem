@@ -13,6 +13,7 @@ def parse(filename):
     confusion = {}
     successes = 0
     if not os.access(filename, os.R_OK):
+        print "Nao foi possivel ler ", filename
         resultFile.write('Failed')
     else:
         logFile = open(filename, 'r')
@@ -20,6 +21,7 @@ def parse(filename):
             cleanLine = line.rstrip()
             lineWords = cleanLine.split()
             if lineWords[0] == 'ERROR':
+                print "Erro em ", filename
                 resultFile.write('Failed')
                 successes = 0
                 resultFile.close()
@@ -35,28 +37,29 @@ def parse(filename):
                 if not confusion[expected].has_key(predicted):
                     confusion[expected][predicted] = 0
                 confusion[expected][predicted] += 1
-                if confusion == predicted:
+                if expected == predicted:
                     successes += 1
         for nameKey, name in classNames.items():
             resultFile.write('Resultados de ' + name + '\n\n')
             for confKey, count in confusion[nameKey].items():
                 resultFile.write(classNames[confKey] + ' : ' + str(count) + '\n')
             resultFile.write("\n=======================================================================================\n\n")
+            resultFile.write("Sucessos: " + str(successes) + "\n")
         resultFile.close()
     resultFile.close()
     return successes
 
 def Execute(argList):
     possibilities = [(c, d, e) for c in classifiers for d in descriptors for e in extractors]
-    bestRate = 0
+    bestRate = -1
     for classifierType, descriptorType, extractorType in possibilities:
         logfileName = 'logs/' + classifierType + '_' + descriptorType + '_' + extractorType + '_log'
-        successRate = parse(logFileName)
+        successRate = parse(logfileName)
         if successRate > bestRate:
             bestRate = successRate
             bestDescriptor = descriptorType
             bestExtractor = extractorType
             bestClassifier = classifierType
-
-if __name__ -- '__main__':
+    print bestClassifier, ' ', bestDescriptor, ' ', bestExtractor, ' foi a melhor combinacao com ', bestRate
+if __name__ == '__main__':
     Execute(sys.argv[1:])
