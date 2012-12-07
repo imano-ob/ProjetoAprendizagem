@@ -5,3 +5,8 @@ Makefile
 *~
 
 LandmarkDetector
+
+*.aux
+*.log
+*.out
+*.fdb_latexmk

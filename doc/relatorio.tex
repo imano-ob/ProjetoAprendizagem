@@ -1,0 +1,168 @@
+\input texbase
+
+\titulo{Projeto}
+\materia{MAC460 - Aprendizagem Computacional}
+
+\aluno{Fernando Omar Aluani}{6797226}
+\aluno{Renan Teruo Carneiro}{6514157}
+
+\begin{document}
+\cabecalho
+
+\section{O Problema}
+O problema de \textit{Landmark Detection} é um problema de classificação, onde a 
+entrada é uma imagem e a saída é um rótulo (um valor numérico ou uma \textit{string})
+que representa o nome do monumento retratado na imagem.
+
+Um dos grandes desafios desse problema é a representação dos dados da imagem. O formato
+padrão de representação pelos pixels da imagem não ajuda muito, pois eles não dizem 
+muito sobre o conteúdo dela. É necessário extrair dados que sejam mais úteis.
+
+\section{Métodos Utilizados}
+A solução do problema consiste em treinar um classificador com um conjunto de imagens,
+sabendo suas respectivas classes, para então usar esse classificador para prever a
+classe de uma dada imagem.
+
+Para conseguir isso, usamos o modelo \textit{Bag Of Words}, que define um vocabulário
+de palavras de tal forma que o vetor de características de uma imagem é um histograma
+que marca a ocorrência de cada palavra em um objeto. A definição do vocabulário para 
+imagens é dada pela detecção de pontos especiais nas imagens, chamados \textit{KeyPoints},
+e seus respectivos vetores de descrição.
+
+Com a biblioteca \textbf{OpenCV}, implementar essa solução consiste em usar algumas
+classes que se relacionam entre si:
+\begin{itemize}
+  \item \textbf{\textit{FeatureDescriptor}:} calcula os \textit{KeyPoints} para uma dada imagem;
+  \item \textbf{\textit{DescriptorExtractor}:} calcula os descritores dos \textit{KeyPoints};
+  \item \textbf{\textit{BOWKMeansTrainer}:} usa \textit{KMeans} para calcular o vocabulário
+        a partir dos descritores das imagens;
+  \item \textbf{\textit{BOWImgDescriptorExtractor}:} sabendo o vocabulário, calcula o histograma
+        de uma imagem;
+  \item \textbf{\textit{Classifier}:} realiza o treinamento e teste em si. Para treinar ele usa
+        os histogramas das imagens e o rótulo de suas respectivas classes. E para o teste ele
+        devolve o rótulo de um dado histograma;
+\end{itemize}
+
+
+
+\section{Resultados}
+Existem várias possibilidades de \textit{FeatureDescriptor}, \textit{DescriptorExtractor} e
+\textit{Classifier} que podemos usar, e após alguns testes para descobrir quais funcionavam com
+o nosso programa optamos pelos seguintes:
+\begin{itemize}
+  \item \textbf{\textit{FeatureDescriptor}:} \textit{FAST, STAR e SIFT};
+  \item \textbf{\textit{DescriptorExtractor}:} \textit{SIFT e SURF};
+  \item \textbf{\textit{Classifier}:} \textit{Bayes, kNN e Árvore de Decisão}
+\end{itemize}
+
+Aqui estão os resultados com cada combinação de \textit{FeatureDescriptor}, \textit{DescriptorExtractor}
+e \textit{Classifier}:
+
+OHNOES
+MIOJO
+BOTA AS TABELAS DOS RESULTADOS (MELHOR SE FOR MATRIZ DE CONFUSAO) AQUI
+
+
+% 4) processo de desenvolvimento da solução do problema em si
+%     -coisas que não funcionaram, dificuldades encontradas, decisões tomadas, etc
+\section{Processo de Desenvolvimento}
+Primeiramente tentamos implementar em C++ um unico classificador (uma única combinação de
+\textit{FeatureDescriptor}, \textit{DescriptorExtractor} e \textit{Classifier})
+e testá-lo, para ver se nosso algoritmo estava funcionando. Inicialmente seguimos um tutorial
+para implementar o classificador, alterando-o de acordo com nossas necessidades.
+
+Tivemos alguns problemas com os formatos das matrizes do OpenCV, alguns problemas ao escrever
+o algoritmo básico (traduzindo do tutorial) e a dificuldade em testar o algoritmo pois o
+processo é lento.
+
+Eventualmente conseguimos fazer esse classificador funcionar. Então nós generalizamos o código do
+classificador para que ele rodasse com combinações diferentes de \textit{FeatureDescriptor}, 
+\textit{DescriptorExtractor} e \textit{Classifier}, escolhidas dinâmicamente em \textit{run-time}.
+Enquanto o próprio OpenCV tem métodos para criação dinâmica de \textit{FeatureDescriptor} e 
+\textit{DescriptorExtractor} passando somente uma \textit{string} com o nome, para generalizar o
+\textit{Classifier} tivemos que usar \textit{templates} de C++, e um pouco de código para saber
+qual template usar de acordo com o valor passado na linha de comando.
+
+A partir daí o maior problema foi os longos períodos de tempo que levavam para executar o treinamento
+e teste de um classificador. Testamos várias combinações. Descobrimos que algumas não funcionavam
+(usando o \textit{DescriptorExtractor ORB}, por exemplo), e não conseguimos fazer alguns 
+\textit{Classifier}s funcionarem (como o \textit{CvRTrees}, por exemplo).
+
+Depois dos testes, decidimos usar somente aqueles mencionados anteriormente (em Resultados).
+Fizemos 2 scripts (em Python) para automatizar a execução e registro dos resultados das várias 
+possibilidades de classificadores que tínhamos, e usamos eles para colher os resultados apresentados
+neste relatório.
+
+\section{Executáveis}
+Aqui vai uma breve descrição dos executáveis que desenvolvemos no projeto:
+
+\subsection{LandmarkDetector}
+Este é o programa principal do projeto, é a implementação de um classificador generalizado em C++.
+Por usar internamente de coisas específicas do Linux, o programa só funcionará nessa plataforma.
+
+Para compilar, execute o \textit{CMake} para gerar um \textit{Makefile}, e então use o \textit{make}
+para compilar o programa. O CMake procura o OpenCV instalado na máquina.
+
+Para executar, rode:
+\begin{small}
+\begin{verbatim}
+./LandmarkDetector <CLASSIFIER> <DESCRIPTOR> <EXTRACTOR> <TRAIN> <TEST>
+\end{verbatim}
+\end{small}
+Onde:
+\begin{itemize}
+  \item CLASSIFIER: um valor que dita qual \textit{Classifier} usar. Pode ser \textit{BAYES}, \textit{KNN}
+        ou \textit{DTREE}(árvore de decisão).
+  \item DESCRIPTOR: especifica qual \textit{FeatureDescriptor} usar. As opções dependem do OpenCV, refira-se
+        a \hyperref{http://docs.opencv.org/modules/features2d/doc/common_interfaces_of_feature_detectors.html}{}{featuredetector-create}{doc do OpenCV}.
+  \item EXTARCTOR: especifica qual \textit{DescriptorExtractor} usar. As opções dependem do OpenCV, refira-se
+        a \hyperref{http://docs.opencv.org/modules/features2d/doc/common_interfaces_of_descriptor_extractors.html}{}{descriptorextractor-create}{doc do OpenCV}.
+  \item TRAIN: caminho para o diretório do conjunto de treinamento. Este diretório deve conter outras subpastas, 
+        onde o nome da subpasta é o rótulo de uma classe, e as imagens dentro dessa subpasta são as imagens para
+        treinar o classificador para tal classe.
+  \item TEST: caminho para o diretório do conjunto de testes. Este diretório deve conter outras subpastas, 
+        onde o nome da subpasta é o rótulo de uma classe, e as imagens dentro dessa subpasta são as imagens para
+        testar o classificador.
+\end{itemize}
+
+O programa imprime na saída padrão o andamento do treinamento, e depois imprime o resultado do teste
+de cada imagem no conjunto de testes.
+
+\subsection{classifierTest.py}
+Pequeno script Python que roda o LandmarkDetector para todas possibilidades de classificadores que 
+escolhemos, e redireciona o output do classificador para arquivos de log que são posicionados numa
+pasta \textit{logs}, localizada na mesma pasta onde o script e o LandmarkDetector estão.
+
+O script só roda o classificador e salva o log para as possibilidades que não tem um log já criado.
+
+Para executá-lo:
+\begin{small}
+\begin{verbatim}
+./classifierTest.py [CLASSIFIER]
+\end{verbatim}
+\end{small}
+Onde \textit{CLASSIFIER} é o valor para ser passado para o campo de mesmo nome ao executar o LandmarkDetector.
+Se esse argumento opcional for passado, o script só rodara as combinações para um único \textit{Classifier}
+(o que foi especificado no argumento). Se esse argumento não for passado, ele irá executar todas 
+possibilidades possíveis.
+
+\subsection{logParser.py}
+Pequeno script Python que lê os logs criados pelo classifierTest.py, e gera relatórios sobre a eficiência dos
+classificadores. Ele gera o relatório para cada classificador na própria pasta \textit{logs}, com o nome do log original
+mais o sufixo \textit{\_result}. Ele também imprime na saída padrão qual combinação foi a que teve o melhor resultado.
+
+O script também gera \textit{snippets} de código \LaTeX (numa pasta \textit{doc}) para criação da tabela da matriz de
+confusão de cada classificador. Nós usamos tais \textit{snippets} para gerar as tabelas dos resultados apresentados aqui.
+
+\section{Referências}
+As principais referências que usamos foram:
+
+\hyperref{http://docs.opencv.org/genindex.html}{}{}{Documentação do OpenCV}
+
+\hyperref{http://www.morethantechnical.com/2011/08/25/a-simple-object-classifier-with-bag-of-words-using-opencv-2-3-w-code/}
+        {}{}{Tutorial sobre classificação de objetos usando Bag of Words e OpenCV}
+        
+Mas também consultamos o fórum da disciplina no PACA e fizemos algumas buscas no \textit{Google}
+quando tivemos problemas com algumas partes específicas do OpenCV.
+
+\end{document}

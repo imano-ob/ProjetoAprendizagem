@@ -7,9 +7,12 @@ descriptors = ["FAST", "STAR", "SURF"]
 extractors = ["SIFT", "SURF"]
 
 def Execute(argList):
-    possibilities = [(d, e) for d in descriptors for e in extractors]
-    classifierType = argList[0]
-    for descriptorType, extractorType in possibilities:
+    if len(argList) > 0:
+        possibilities = [(argList[0], d, e) for d in descriptors for e in extractors]
+    else:
+        possibilities = [(c, d, e) for c in classifiers for d in descriptors for e in extractors]
+        
+    for classifierType, descriptorType, extractorType in possibilities:
         logfileBaseName = "logs/%s_%s_%s" % (classifierType, descriptorType, extractorType)
         logfileFinalName = logfileBaseName + '_log'
         logfileTmpName = logfileFinalName + '_tmp'
