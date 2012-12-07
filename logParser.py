@@ -44,7 +44,7 @@ def parse(filename):
             for confKey, count in confusion[nameKey].items():
                 resultFile.write(classNames[confKey] + ' : ' + str(count) + '\n')
             resultFile.write("\n=======================================================================================\n\n")
-            resultFile.write("Sucessos: " + str(successes) + "\n")
+        resultFile.write("Sucessos: " + str(successes) + "\n")
         resultFile.close()
     resultFile.close()
     return successes
