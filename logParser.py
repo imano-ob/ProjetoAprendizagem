@@ -46,7 +46,8 @@ def parse(filename):
         resultTexFile = open(resultTexFilename, 'w')
         resultTexFile.write("\\begin{tabular}{|c|c|c|c|c|c|c|}\n")
         resultTexFile.write("\\hline\n")
-        resultTexFile.write("\\multicolumn{5}{|c}{Classe Prevista}\\\\\n")
+        resultTexFile.write("\\multicolumn{7}{|c|}{Classe Prevista}\\\\\n")
+        resultTexFile.write("\\hline\n")
         # resultTexFile.write("\\multirow{5}{*}{Classe Real}\n")
         for nameKey, name in classNames.items():
             resultTexFile.write(" & ")
@@ -64,6 +65,8 @@ def parse(filename):
                     resultTexFile.write("0")
             resultTexFile.write("\\\\\n")
             resultFile.write("\n=======================================================================================\n\n")
+        
+        resultTexFile.write("\\hline\n")
         resultTexFile.write("\\end{tabular}\n")
         resultFile.write("Sucessos: " + str(successes) + "\n")
         resultFile.close()
