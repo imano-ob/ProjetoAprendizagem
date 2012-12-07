@@ -7,6 +7,10 @@ descriptors = ["FAST", "STAR", "SURF"]
 extractors = ["SIFT", "SURF"]
 
 def parse(filename):
+    logFolder = 'logs/'
+    docFolder = 'doc/'
+    resultTexFilename = docFolder + filename + '.tex'
+    filename = logFolder + filename
     resultFilename = filename + '_results'
     resultFile = open(resultFilename, 'w')
     classNames = {}
@@ -39,21 +43,41 @@ def parse(filename):
                 confusion[expected][predicted] += 1
                 if expected == predicted:
                     successes += 1
+        resultTexFile = open(resultTexFilename, 'w')
+        resultTexFile.write("\\begin{tabular}{|c|c|c|c|c|c|c|}\n")
+        resultTexFile.write("\\hline\n")
+        resultTexFile.write("\\multicolumn{7}{|c|}{Classe Prevista}\\\\\n")
+        resultTexFile.write("\\hline\n")
+        # resultTexFile.write("\\multirow{5}{*}{Classe Real}\n")
+        for nameKey, name in classNames.items():
+            resultTexFile.write(" & ")
+            resultTexFile.write(name)
+        resultTexFile.write("\\\\\n")
         for nameKey, name in classNames.items():
             resultFile.write('Resultados de ' + name + '\n\n')
-            for confKey, count in confusion[nameKey].items():
-                resultFile.write(classNames[confKey] + ' : ' + str(count) + '\n')
+            resultTexFile.write(name)
+            for confNameKey, confName in classNames.items():
+                resultTexFile.write(" & ")
+                if confusion[nameKey].has_key(confNameKey):
+                    resultFile.write(classNames[confNameKey] + ' : ' + str(confusion[nameKey][confNameKey]) + '\n')
+                    resultTexFile.write(str(confusion[nameKey][confNameKey]))
+                else:
+                    resultTexFile.write("0")
+            resultTexFile.write("\\\\\n")
             resultFile.write("\n=======================================================================================\n\n")
+        
+        resultTexFile.write("\\hline\n")
+        resultTexFile.write("\\end{tabular}\n")
         resultFile.write("Sucessos: " + str(successes) + "\n")
         resultFile.close()
-    resultFile.close()
+    logFile.close()
     return successes
 
 def Execute(argList):
     possibilities = [(c, d, e) for c in classifiers for d in descriptors for e in extractors]
     bestRate = -1
     for classifierType, descriptorType, extractorType in possibilities:
-        logfileName = 'logs/' + classifierType + '_' + descriptorType + '_' + extractorType + '_log'
+        logfileName = classifierType + '_' + descriptorType + '_' + extractorType + '_log'
         successRate = parse(logfileName)
         if successRate > bestRate:
             bestRate = successRate
