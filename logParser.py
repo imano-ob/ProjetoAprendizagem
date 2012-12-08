@@ -23,6 +23,7 @@ def parse(filename):
         logFile = open(filename, 'r')
         for line in logFile:
             cleanLine = line.rstrip()
+            cleanLine = line.replace("torre eiffel", "torre-eiffel")
             lineWords = cleanLine.split()
             if lineWords[0] == 'ERROR':
                 print "Erro em ", filename
